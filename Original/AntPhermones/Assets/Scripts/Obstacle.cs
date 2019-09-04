@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public struct Obstacle {
-	public Vector2 position;
-	public float radius;
+public struct Obstacle
+{
+    public Vector2 Position;
+    public float Radius;
 }

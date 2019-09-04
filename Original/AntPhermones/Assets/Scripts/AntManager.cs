@@ -152,8 +152,8 @@ public class AntManager : MonoBehaviour {
 				if ((t * holeCount)%1f < obstaclesPerRing) {
 					float angle = (j + offset) / (float)maxCount * (2f * Mathf.PI);
 					Obstacle obstacle = new Obstacle();
-					obstacle.position = new Vector2(mapSize * .5f + Mathf.Cos(angle) * ringRadius,mapSize * .5f + Mathf.Sin(angle) * ringRadius);
-					obstacle.radius = obstacleRadius;
+					obstacle.Position = new Vector2(mapSize * .5f + Mathf.Cos(angle) * ringRadius,mapSize * .5f + Mathf.Sin(angle) * ringRadius);
+					obstacle.Radius = obstacleRadius;
 					output.Add(obstacle);
 					//Debug.DrawRay(obstacle.position / mapSize,-Vector3.forward * .05f,Color.green,10000f);
 				}
@@ -164,7 +164,7 @@ public class AntManager : MonoBehaviour {
 		for (int i=0;i<obstacleMatrices.Length;i++) {
 			obstacleMatrices[i] = new Matrix4x4[Mathf.Min(instancesPerBatch,output.Count - i * instancesPerBatch)];
 			for (int j=0;j<obstacleMatrices[i].Length;j++) {
-				obstacleMatrices[i][j] = Matrix4x4.TRS(output[i * instancesPerBatch + j].position / mapSize,Quaternion.identity,new Vector3(obstacleRadius*2f,obstacleRadius*2f,1f)/mapSize);
+				obstacleMatrices[i][j] = Matrix4x4.TRS(output[i * instancesPerBatch + j].Position / mapSize,Quaternion.identity,new Vector3(obstacleRadius*2f,obstacleRadius*2f,1f)/mapSize);
 			}
 		}
 
@@ -179,8 +179,8 @@ public class AntManager : MonoBehaviour {
 		}
 
 		for (int i = 0; i < obstacles.Length; i++) {
-			Vector2 pos = obstacles[i].position;
-			float radius = obstacles[i].radius;
+			Vector2 pos = obstacles[i].Position;
+			float radius = obstacles[i].Radius;
 			for (int x = Mathf.FloorToInt((pos.x - radius)/mapSize*bucketResolution); x <= Mathf.FloorToInt((pos.x + radius)/mapSize*bucketResolution); x++) {
 				if (x < 0 || x >= bucketResolution) {
 					continue;
@@ -329,15 +329,15 @@ public class AntManager : MonoBehaviour {
 			Obstacle[] nearbyObstacles = GetObstacleBucket(ant.position);
 			for (int j=0;j<nearbyObstacles.Length;j++) {
 				Obstacle obstacle = nearbyObstacles[j];
-				dx = ant.position.x - obstacle.position.x;
-				dy = ant.position.y - obstacle.position.y;
+				dx = ant.position.x - obstacle.Position.x;
+				dy = ant.position.y - obstacle.Position.y;
 				float sqrDist = dx * dx + dy * dy;
 				if (sqrDist<obstacleRadius*obstacleRadius) {
 					dist = Mathf.Sqrt(sqrDist);
 					dx /= dist;
 					dy /= dist;
-					ant.position.x = obstacle.position.x + dx * obstacleRadius;
-					ant.position.y = obstacle.position.y + dy * obstacleRadius;
+					ant.position.x = obstacle.Position.x + dx * obstacleRadius;
+					ant.position.y = obstacle.Position.y + dy * obstacleRadius;
 
 					vx -= dx * (dx * vx + dy * vy) * 1.5f;
 					vy -= dy * (dx * vx + dy * vy) * 1.5f;
@@ -417,7 +417,7 @@ public class AntManager : MonoBehaviour {
 			Graphics.DrawMeshInstanced(antMesh,0,antMaterial,matrices[i],matrices[i].Length,matProps[i]);
 		}
 		for (int i=0;i<obstacleMatrices.Length;i++) {
-			Graphics.DrawMeshInstanced(obstacleMesh,0,obstacleMaterial,obstacleMatrices[i]);
+			Graphics.DrawMeshInstanced(obstacleMesh,0, obstacleMaterial, obstacleMatrices[i]);
 		}
 
 		Graphics.DrawMesh(colonyMesh,colonyMatrix,colonyMaterial,0);
